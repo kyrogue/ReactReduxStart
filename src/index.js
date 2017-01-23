@@ -15,22 +15,27 @@ class App extends Component{
       videos:[] ,
       selectedVideo:null
   };
+  this.videoSearch('surfboards');
+  }
+
+  videoSearch(term){
     //function(data) replaced with (videos)=> , parameter of received videos
     //setState({videos:data}}) replaced with {videos} , ES6 , if key and value same string can replace with shorthand
     //set first video as default.
-    YTSearch({key:API_KEY,term:'surfboards'},(videos)=>{
+    YTSearch({key:API_KEY,term:term},(videos)=>{
       this.setState({
         videos:videos,
         selectedVideo:videos[0]
       });
     });
   }
+
   //passing props 'state.videos' from App parent to VideoList as videos.
   //undefined can happen, as rendering null obj when not yet loaded.
   render(){
     return(
       <div>
-        <SearchBar/>
+        <SearchBar onSearchTermChange={term=>this.videoSearch(term)}/>
         <VideoDetail video={this.state.selectedVideo}/>
         <VideoList onVideoSelect={selectedVideo=>this.setState({selectedVideo})} videos={this.state.videos}/>
       </div>
